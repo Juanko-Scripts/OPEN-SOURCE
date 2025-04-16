@@ -1,0 +1,15 @@
+if game.PlaceId == 70618173619214 then
+spawn(function()
+while wait() do
+game:GetService("ReplicatedStorage").Packages.Knit.Services.EconomyService.RF.RegisterBall:InvokeServer(math.huge, true)
+game:GetService("RunService").Heartbeat:Wait()
+game:GetService("ReplicatedStorage").Packages.Knit.Services.EconomyService.RF.RegisterBall:InvokeServer(- math.huge, true)
+end
+end)
+else
+spawn(function()
+while wait() do
+game:GetService("TeleportService"):Teleport(70618173619214, Player)
+end
+end)
+end
