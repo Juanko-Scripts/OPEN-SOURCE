@@ -1,0 +1,7 @@
+for i, XP in pairs(game:GetService("Workspace"):GetDescendants()) do
+spawn(function()
+if XP:IsA("TouchTransmitter") or XP:IsA("TouchInterest") then
+firetouchinterest(Players.LocalPlayer.Character.Head, XP, 0)
+end
+end)
+end
