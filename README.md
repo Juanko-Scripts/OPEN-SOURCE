@@ -1,2 +1,2 @@
 # OPEN-SOURCE
-Script Original Juanko Mods XP
+Scripts Original Made By Juanko Mods XP
