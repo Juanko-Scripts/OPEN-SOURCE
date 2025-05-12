@@ -1,0 +1,93 @@
+if game.PlaceId == 8689257920 or game.PlaceId == 15173179470 then
+    game:GetService("StarterGui"):SetCore("SendNotification",{
+        Title = "H17S3 / BYPASS",
+        Text = "Disabled Full Anti Cheat"
+    })
+assert(hookfunction and hookmetamethod and getnamecallmethod and getconstants and iscclosure,"Executor not supported and is missing important functions")
+local LastBlock = tick()
+local OldHook,hookmetamethod,getnamecallmethod=nil,hookmetamethod,getnamecallmethod
+OldHook = hookmetamethod(game, "__namecall", function(self, ...)
+    local Got  = getnamecallmethod()
+    if Got == "FireServer" then
+        local WithArgs = {...}
+        for i,v in pairs(WithArgs) do
+            if v and type(v) == "number" and v >54 then
+                if tick()-LastBlock >2 then
+                    LastBlock = tick()
+                end
+                return task.wait(9e9)
+            end
+        end
+    elseif Got == "IsStudio" then
+        return true
+    elseif Got == "GetPropertyChangedSignal" then
+        if debug.getinfo(3).source:find("BClient") and typeof(self) == "Instance" and self.Name:lower():find("humanoid") then
+            local WithArgs = {...}
+            local FakeTable = {}
+            function FakeTable:Connect()
+                return function()
+                    wait(9e9)
+                end
+            end
+            return FakeTable
+        end
+    end
+    return OldHook(self, ...)
+end)
+local NormalWait
+NormalWait = hookfunction(task.wait,function(...)
+    local Wants = ...
+    if Wants == 0.5 and debug.getinfo(3).source:find("BClient") then
+        return wait(9e9)
+    end
+    return NormalWait(...)
+end)
+task.spawn(function()
+    local BlockedSignals = {
+        {"HumanoidRootPart", "CFrame"},
+        {"Humanoid", "WalkSpeed"},
+        {"Humanoid", "JumpHeight"},
+        {"Humanoid", "JumpPower"},
+        {"Torso", "Changed", true},
+        {nil, "DescendantAdded", true},
+    }
+    local function DisableSignals(Character)
+        --// Character signals
+        for _, TypeConnection in ipairs(BlockedSignals) do
+            local Instance_Found = TypeConnection[1] and Character and Character:FindFirstChild(TypeConnection[1]) or Character
+            if Instance_Found then
+                local Signals = nil
+                if TypeConnection[3] then
+                    Signals = Instance_Found[TypeConnection[2]]
+                else
+                    Signals = Instance_Found:GetPropertyChangedSignal(TypeConnection[2])
+                end
+                for _, connection in ipairs(getconnections(Signals)) do
+                    connection:Disconnect()
+                end
+            end
+        end
+        --// Extra signals (Tp)
+        for _, Connections in ipairs(getconnections(game:GetService("RunService").Stepped)) do
+            local FunctionGot = Connections.Function
+            if not iscclosure(FunctionGot) and table.find(getconstants(FunctionGot),"CFrameReadHook") then
+                hookfunction(FunctionGot,function()return wait(9e9)end)
+            end
+        end
+    end
+    DisableSignals(game.Players.LocalPlayer.Character)
+    game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(Char)
+        Char:WaitForChild("Humanoid")
+        task.wait()
+        DisableSignals(Char)
+    end)
+end)
+else
+WUDHSKWHJWJWJW = math.random(1,2)
+if WUDHSKWHJWJWJW == 1 then
+game:GetService("TeleportService"):Teleport(8689257920, Player)
+end
+if WUDHSKWHJWJWJW == 2 then
+game:GetService("TeleportService"):Teleport(15173179470, Player)
+end
+end
