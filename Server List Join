@@ -1,0 +1,413 @@
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+local TweenService = game:GetService("TweenService")
+local MarketplaceService = game:GetService("MarketplaceService")
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+
+local LocalPlayer = Players.LocalPlayer
+local PlaceId = game.PlaceId
+local JobId = game.JobId
+local CurrentSortMethod = "fastest"
+local GameName = "Unknown Game"
+local LastSuccessfulRequestTime = 0
+
+pcall(function()
+    local productInfo = MarketplaceService:GetProductInfo(PlaceId)
+    if productInfo and productInfo.Name then
+        GameName = productInfo.Name
+    end
+end)
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "AdvancedServerHopGui"
+ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 400, 0, 500)
+MainFrame.Position = UDim2.new(0.5, -200, 0.5, -250)
+MainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MainFrame.BackgroundTransparency = 0.3
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.Selectable = true
+MainFrame.Parent = ScreenGui
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = MainFrame
+
+local CloseButton = Instance.new("TextButton")
+CloseButton.Size = UDim2.new(0, 30, 0, 30)
+CloseButton.Position = UDim2.new(1, -40, 0, 5)
+CloseButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+CloseButton.BackgroundTransparency = 0
+CloseButton.Text = "X"
+CloseButton.Font = Enum.Font.SourceSansBold
+CloseButton.TextColor3 = Color3.new(1, 1, 1)
+CloseButton.TextSize = 20
+CloseButton.Parent = MainFrame
+
+local CloseButtonCorner = Instance.new("UICorner")
+CloseButtonCorner.CornerRadius = UDim.new(0, 15)
+CloseButtonCorner.Parent = CloseButton
+
+local function safeButtonConnect(button, event, callback)
+    if button and button:IsA("TextButton") then
+        return event:Connect(callback)
+    end
+    return nil
+end
+
+safeButtonConnect(CloseButton, CloseButton.MouseButton1Click, function()
+    local closeTween = TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+        Position = UDim2.new(0.5, -200, -1, 0),
+        BackgroundTransparency = 1
+    })
+    closeTween:Play()
+    closeTween.Completed:Connect(function()
+        ScreenGui:Destroy()
+    end)
+end)
+
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Size = UDim2.new(1, 0, 0, 40)
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Text = "Server Hopper"
+TitleLabel.Font = Enum.Font.SourceSansBold
+TitleLabel.TextSize = 28
+TitleLabel.TextColor3 = Color3.new(1, 1, 1)
+TitleLabel.Parent = MainFrame
+
+local GameLabel = Instance.new("TextLabel")
+GameLabel.Size = UDim2.new(1, 0, 0, 25)
+GameLabel.Position = UDim2.new(0, 0, 0, 40)
+GameLabel.BackgroundTransparency = 1
+GameLabel.Text = "Current Game: " .. GameName
+GameLabel.Font = Enum.Font.SourceSans
+GameLabel.TextSize = 20
+GameLabel.TextColor3 = Color3.new(0.9, 0.9, 0.9)
+GameLabel.Parent = MainFrame
+
+local RefreshButton = Instance.new("TextButton")
+RefreshButton.Size = UDim2.new(0, 100, 0, 30)
+RefreshButton.Position = UDim2.new(0.5, -50, 0, 70)
+RefreshButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+RefreshButton.BackgroundTransparency = 0
+RefreshButton.Text = "Refresh"
+RefreshButton.Font = Enum.Font.SourceSansBold
+RefreshButton.TextSize = 20
+RefreshButton.TextColor3 = Color3.new(1, 1, 1)
+RefreshButton.Parent = MainFrame
+
+local RefreshButtonCorner = Instance.new("UICorner")
+RefreshButtonCorner.CornerRadius = UDim.new(0, 15)
+RefreshButtonCorner.Parent = RefreshButton
+
+local function setupButtonHoverEffects(button, normalColor, hoverColor)
+    if not button or not button:IsA("TextButton") then return end
+    
+    safeButtonConnect(button, button.MouseEnter, function()
+        local tween = TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = hoverColor})
+        tween:Play()
+    end)
+    
+    safeButtonConnect(button, button.MouseLeave, function()
+        local tween = TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = normalColor})
+        tween:Play()
+    end)
+end
+
+setupButtonHoverEffects(RefreshButton, Color3.fromRGB(70, 70, 70), Color3.fromRGB(100, 100, 100))
+setupButtonHoverEffects(CloseButton, Color3.fromRGB(200, 50, 50), Color3.fromRGB(220, 70, 70))
+
+local SortOptionsFrame = Instance.new("Frame")
+SortOptionsFrame.Size = UDim2.new(1, -20, 0, 40)
+SortOptionsFrame.Position = UDim2.new(0, 10, 0, 105)
+SortOptionsFrame.BackgroundTransparency = 1
+SortOptionsFrame.Parent = MainFrame
+
+local SortOptions = {
+    {Name = "Fastest Ping", Key = "fastest"},
+    {Name = "Lowest Players", Key = "lowPlayers"},
+    {Name = "Max Players", Key = "maxPlayers"}
+}
+
+local SortButtons = {}
+local ButtonWidth = 120
+
+for i, option in ipairs(SortOptions) do
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(0, ButtonWidth, 1, 0)
+    button.Position = UDim2.new(0, (i-1) * (ButtonWidth + 10), 0, 0)
+    button.BackgroundColor3 = (CurrentSortMethod == option.Key) and Color3.fromRGB(100, 100, 100) or Color3.fromRGB(70, 70, 70)
+    button.Text = option.Name
+    button.Font = Enum.Font.SourceSans
+    button.TextSize = 16
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.Parent = SortOptionsFrame
+    
+    local buttonCorner = Instance.new("UICorner")
+    buttonCorner.CornerRadius = UDim.new(0, 10)
+    buttonCorner.Parent = button
+    
+    setupButtonHoverEffects(button, 
+        (CurrentSortMethod == option.Key) and Color3.fromRGB(100, 100, 100) or Color3.fromRGB(70, 70, 70), 
+        Color3.fromRGB(120, 120, 120))
+    
+    safeButtonConnect(button, button.MouseButton1Click, function()
+        CurrentSortMethod = option.Key
+        for key, btn in pairs(SortButtons) do
+            if btn and btn:IsA("TextButton") then
+                local isSelected = (key == option.Key)
+                local color = isSelected and Color3.fromRGB(100, 100, 100) or Color3.fromRGB(70, 70, 70)
+                local tween = TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = color})
+                tween:Play()
+            end
+        end
+        loadServerList()
+    end)
+    
+    SortButtons[option.Key] = button
+end
+
+local StatusLabel = Instance.new("TextLabel")
+StatusLabel.Size = UDim2.new(1, -20, 0, 30)
+StatusLabel.Position = UDim2.new(0, 10, 0, 150)
+StatusLabel.BackgroundTransparency = 1
+StatusLabel.Text = "Loading servers..."
+StatusLabel.Font = Enum.Font.SourceSans
+StatusLabel.TextSize = 20
+StatusLabel.TextColor3 = Color3.new(1, 1, 1)
+StatusLabel.Parent = MainFrame
+
+local loadingTween = TweenService:Create(StatusLabel, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, -1, true), {
+    TextTransparency = 0.5
+})
+
+local ServerListFrame = Instance.new("ScrollingFrame")
+ServerListFrame.Size = UDim2.new(1, -20, 1, -170)
+ServerListFrame.Position = UDim2.new(0, 10, 0, 150)
+ServerListFrame.BackgroundTransparency = 1
+ServerListFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+ServerListFrame.BorderSizePixel = 0
+ServerListFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+ServerListFrame.ScrollBarThickness = 8
+ServerListFrame.Parent = MainFrame
+
+local ServerListLayout = Instance.new("UIListLayout")
+ServerListLayout.Parent = ServerListFrame
+ServerListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+ServerListLayout.Padding = UDim.new(0, 5)
+
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+local function updateInput(input)
+    local delta = input.Position - dragStart
+    MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+MainFrame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+MainFrame.InputChanged:Connect(function(input)
+    if (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) and dragging then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        updateInput(input)
+    end
+end)
+
+local function fetchServerList(callback)
+    local success, response = pcall(function()
+        local url = string.format("https://games.roblox.com/v1/games/%d/servers/Public?limit=100&excludeFullGames=true&t=%d", PlaceId, tick())
+        return HttpService:JSONDecode(game:HttpGet(url))
+    end)
+    
+    if success and response and response.data then
+        LastSuccessfulRequestTime = tick()
+        callback(response.data)
+    else
+
+        local altSuccess, altResponse = pcall(function()
+            local url = string.format("https://www.roblox.com/games/getgameinstancesjson?placeId=%d&startindex=0", PlaceId)
+            local result = game:HttpGet(url)
+            return HttpService:JSONDecode(result)
+        end)
+        
+        if altSuccess and altResponse and altResponse.Collection then
+            LastSuccessfulRequestTime = tick()
+
+            local formattedServers = {}
+            for _, server in ipairs(altResponse.Collection) do
+                table.insert(formattedServers, {
+                    id = server.Guid,
+                    playing = server.CurrentPlayers,
+                    maxPlayers = server.MaxPlayers,
+                    ping = server.Ping,
+                    location = server.ServerLocation
+                })
+            end
+            callback(formattedServers)
+        else
+            warn("Error fetching servers:", response or "No response")
+            StatusLabel.Text = "Error loading servers. Try again."
+            loadingTween:Cancel()
+            return false
+        end
+    end
+    return true
+end
+
+local function sortServers(servers, method)
+    if not servers then return {} end
+    
+    if method == "fastest" then
+        table.sort(servers, function(a, b)
+            return (a.ping or math.huge) < (b.ping or math.huge)
+        end)
+    elseif method == "lowPlayers" then
+        table.sort(servers, function(a, b)
+            return a.playing < b.playing
+        end)
+    elseif method == "maxPlayers" then
+        table.sort(servers, function(a, b)
+            return a.playing > b.playing
+        end)
+    end
+    return servers
+end
+
+local function displayServers(servers)
+    if not servers then return end
+    
+    for _, child in ipairs(ServerListFrame:GetChildren()) do
+        if child:IsA("Frame") then
+            child:Destroy()
+        end
+    end
+    
+    for i, server in ipairs(servers) do
+        if not server.id then continue end
+        
+        local serverFrame = Instance.new("Frame")
+        serverFrame.Size = UDim2.new(1, -10, 0, 40)
+        serverFrame.BackgroundColor3 = (i % 2 == 0) and Color3.fromRGB(50, 50, 50) or Color3.fromRGB(60, 60, 60)
+        serverFrame.BorderSizePixel = 0
+        serverFrame.LayoutOrder = i
+        serverFrame.Parent = ServerListFrame
+        
+        local layout = Instance.new("UIListLayout", serverFrame)
+        layout.FillDirection = Enum.FillDirection.Horizontal
+        layout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+        
+        local numberLabel = Instance.new("TextLabel")
+        numberLabel.Size = UDim2.new(0, 40, 1, 0)
+        numberLabel.BackgroundTransparency = 1
+        numberLabel.Text = tostring(i)
+        numberLabel.Font = Enum.Font.SourceSans
+        numberLabel.TextSize = 18
+        numberLabel.TextColor3 = Color3.new(1, 1, 1)
+        numberLabel.Parent = serverFrame
+        
+        local playersLabel = Instance.new("TextLabel")
+        playersLabel.Size = UDim2.new(0, 80, 1, 0)
+        playersLabel.BackgroundTransparency = 1
+        playersLabel.Text = string.format("%d/%d", server.playing or 0, server.maxPlayers or 0)
+        playersLabel.Font = Enum.Font.SourceSans
+        playersLabel.TextSize = 18
+        playersLabel.TextColor3 = Color3.new(1, 1, 1)
+        playersLabel.Parent = serverFrame
+        
+        local pingLabel = Instance.new("TextLabel")
+        pingLabel.Size = UDim2.new(0, 100, 1, 0)
+        pingLabel.BackgroundTransparency = 1
+        pingLabel.Text = "Ping: " .. tostring(server.ping or "N/A")
+        pingLabel.Font = Enum.Font.SourceSans
+        pingLabel.TextSize = 18
+        pingLabel.TextColor3 = Color3.new(1, 1, 1)
+        pingLabel.Parent = serverFrame
+        
+        local regionLabel = Instance.new("TextLabel")
+        regionLabel.Size = UDim2.new(0, 120, 1, 0)
+        regionLabel.BackgroundTransparency = 1
+        regionLabel.Text = "Region: " .. tostring(server.location or "Unknown")
+        regionLabel.Font = Enum.Font.SourceSans
+        regionLabel.TextSize = 18
+        regionLabel.TextColor3 = Color3.new(1, 1, 1)
+        regionLabel.Parent = serverFrame
+        
+        local joinButton = Instance.new("TextButton")
+        joinButton.Size = UDim2.new(0, 80, 1, 0)
+        joinButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+        joinButton.Text = "Join"
+        joinButton.Font = Enum.Font.SourceSansBold
+        joinButton.TextSize = 18
+        joinButton.TextColor3 = Color3.new(1, 1, 1)
+        joinButton.Parent = serverFrame
+        
+        local joinButtonCorner = Instance.new("UICorner")
+        joinButtonCorner.CornerRadius = UDim.new(0, 10)
+        joinButtonCorner.Parent = joinButton
+        
+        setupButtonHoverEffects(joinButton, Color3.fromRGB(80, 80, 80), Color3.fromRGB(100, 100, 100))
+        
+        if server.id == JobId then
+            joinButton.Text = "Current"
+            joinButton.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+            joinButton.AutoButtonColor = false
+            joinButton.Active = false
+        else
+            safeButtonConnect(joinButton, joinButton.MouseButton1Click, function()
+                StatusLabel.Text = "Teleporting..."
+                pcall(function()
+                    TeleportService:TeleportToPlaceInstance(PlaceId, server.id, LocalPlayer)
+                end)
+            end)
+        end
+    end
+    
+    local canvasHeight = #servers * 45
+    ServerListFrame.CanvasSize = UDim2.new(0, 0, 0, canvasHeight)
+    StatusLabel.Text = "Loaded " .. tostring(#servers) .. " servers."
+    loadingTween:Cancel()
+end
+
+function loadServerList()
+    StatusLabel.Text = "Loading servers..."
+    loadingTween:Play()
+    
+    fetchServerList(function(servers)
+        if not servers or #servers == 0 then
+            StatusLabel.Text = "No servers found. Try refreshing."
+            loadingTween:Cancel()
+            return
+        end
+        
+        local sortedServers = sortServers(servers, CurrentSortMethod)
+        displayServers(sortedServers)
+    end)
+end
+
+safeButtonConnect(RefreshButton, RefreshButton.MouseButton1Click, function()
+    loadServerList()
+end)
+loadServerList()
