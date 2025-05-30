@@ -1,0 +1,205 @@
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "HitboxExpanderGUI"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = player.PlayerGui
+screenGui.Draggable = true
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Size = UDim2.new(0, 300, 0, 200)
+mainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
+mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+mainFrame.BorderSizePixel = 0
+mainFrame.Parent = screenGui
+
+local title = Instance.new("TextLabel")
+title.Name = "Title"
+title.Text = "Hitbox Expander BASIC"
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = 18
+title.Draggable = true
+title.Parent = mainFrame
+
+local sizeLabel = Instance.new("TextLabel")
+sizeLabel.Name = "SizeLabel"
+sizeLabel.Text = "Factor of Expander:"
+sizeLabel.Size = UDim2.new(0.6, -10, 0, 25)
+sizeLabel.Position = UDim2.new(0, 10, 0, 40)
+sizeLabel.BackgroundTransparency = 1
+sizeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+sizeLabel.TextXAlignment = Enum.TextXAlignment.Left
+sizeLabel.Draggable = true
+sizeLabel.Parent = mainFrame
+
+local sizeSlider = Instance.new("TextBox")
+sizeSlider.Name = "SizeSlider"
+sizeSlider.Text = "1.5"
+sizeSlider.Size = UDim2.new(0.4, -10, 0, 25)
+sizeSlider.Position = UDim2.new(0.6, 0, 0, 40)
+sizeSlider.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+sizeSlider.TextColor3 = Color3.fromRGB(255, 255, 255)
+sizeSlider.Parent = mainFrame
+
+local partSelectorFrame = Instance.new("Frame")
+partSelectorFrame.Name = "PartSelectorFrame"
+partSelectorFrame.Size = UDim2.new(0, 120, 0, 80)
+partSelectorFrame.Position = UDim2.new(1, 10, 0, 0)
+partSelectorFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+partSelectorFrame.BorderSizePixel = 0
+partSelectorFrame.Visible = false
+partSelectorFrame.Parent = mainFrame
+partSelectorFrame.Draggable = true
+
+local headButton = Instance.new("TextButton")
+headButton.Name = "HeadButton"
+headButton.Text = "Head"
+headButton.Size = UDim2.new(1, 0, 0, 25)
+headButton.Position = UDim2.new(0, 0, 0, 5)
+headButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+headButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+headButton.Parent = partSelectorFrame
+
+local torsoButton = Instance.new("TextButton")
+torsoButton.Name = "TorsoButton"
+torsoButton.Text = "HumanoidRootPart"
+torsoButton.Size = UDim2.new(1, 0, 0, 25)
+torsoButton.Position = UDim2.new(0, 0, 0, 35)
+torsoButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+torsoButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+torsoButton.Parent = partSelectorFrame
+
+local selectPartButton = Instance.new("TextButton")
+selectPartButton.Name = "SelectPartButton"
+selectPartButton.Text = "Select Part"
+selectPartButton.Size = UDim2.new(0.4, -10, 0, 25)
+selectPartButton.Position = UDim2.new(0.6, 0, 0, 70)
+selectPartButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+selectPartButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+selectPartButton.Parent = mainFrame
+
+local currentPartLabel = Instance.new("TextLabel")
+currentPartLabel.Draggable = true
+currentPartLabel.Name = "CurrentPartLabel"
+currentPartLabel.Text = "Part: Head"
+currentPartLabel.Size = UDim2.new(0.6, -10, 0, 25)
+currentPartLabel.Position = UDim2.new(0, 10, 0, 70)
+currentPartLabel.BackgroundTransparency = 1
+currentPartLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+currentPartLabel.TextXAlignment = Enum.TextXAlignment.Left
+currentPartLabel.Parent = mainFrame
+
+local applyButton = Instance.new("TextButton")
+applyButton.Name = "ApplyButton"
+applyButton.Text = "Activate Hitbox"
+applyButton.Size = UDim2.new(0.45, -10, 0, 30)
+applyButton.Position = UDim2.new(0, 10, 1, -40)
+applyButton.BackgroundColor3 = Color3.fromRGB(60, 140, 60)
+applyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+applyButton.Parent = mainFrame
+
+local resetButton = Instance.new("TextButton")
+resetButton.Name = "ResetButton"
+resetButton.Text = "Reset Hitbox"
+resetButton.Size = UDim2.new(0.45, -10, 0, 30)
+resetButton.Position = UDim2.new(0.55, 0, 1, -40)
+resetButton.BackgroundColor3 = Color3.fromRGB(140, 60, 60)
+resetButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+resetButton.Parent = mainFrame
+
+local currentPart = "HumanoidRootPart"
+local originalSizes = {}
+local modifiedPlayers = {}
+
+local function applySizeChanges(otherPlayer, partName, factor)
+    if otherPlayer == player then return end 
+    local character = otherPlayer.Character
+    if not character then return end
+    
+    if not originalSizes[otherPlayer] then
+        originalSizes[otherPlayer] = {}
+    end
+    
+    local part = character:FindFirstChild(partName)
+    if part then
+        if not originalSizes[otherPlayer][partName] then
+            originalSizes[otherPlayer][partName] = part.Size
+        end
+        
+        part.Size = originalSizes[otherPlayer][partName] * factor
+        modifiedPlayers[otherPlayer] = true
+    end
+end
+
+local function resetSizes(otherPlayer)
+    if otherPlayer == player then return end 
+    local character = otherPlayer.Character
+    if not character or not originalSizes[otherPlayer] then return end
+    
+    for partName, originalSize in pairs(originalSizes[otherPlayer]) do
+        local part = character:FindFirstChild(partName)
+        if part then
+            part.Size = originalSize
+        end
+    end
+    
+    modifiedPlayers[otherPlayer] = nil
+end
+
+selectPartButton.MouseButton1Click:Connect(function()
+    partSelectorFrame.Visible = not partSelectorFrame.Visible
+end)
+
+headButton.MouseButton1Click:Connect(function()
+    currentPart = "Head"
+    currentPartLabel.Text = "Part: Head"
+    partSelectorFrame.Visible = false
+end)
+
+torsoButton.MouseButton1Click:Connect(function()
+    currentPart = "HumanoidRootPart"
+    currentPartLabel.Text = "Part: HumanoidRootPart"
+    partSelectorFrame.Visible = false
+end)
+
+applyButton.MouseButton1Click:Connect(function()
+    local factor = tonumber(sizeSlider.Text) or 1.5
+    for _, otherPlayer in ipairs(Players:GetPlayers()) do
+        if otherPlayer ~= player then
+            applySizeChanges(otherPlayer, currentPart, factor)
+        end
+    end
+end)
+
+resetButton.MouseButton1Click:Connect(function()
+    for otherPlayer, _ in pairs(modifiedPlayers) do
+        resetSizes(otherPlayer)
+    end
+end)
+
+Players.PlayerAdded:Connect(function(newPlayer)
+    newPlayer.CharacterAdded:Connect(function(character)
+        if modifiedPlayers[newPlayer] then
+            local factor = tonumber(sizeSlider.Text) or 1.5
+            applySizeChanges(newPlayer, currentPart, factor)
+        end
+    end)
+end)
+
+for _, otherPlayer in ipairs(Players:GetPlayers()) do
+    if otherPlayer ~= player then
+        otherPlayer.CharacterAdded:Connect(function(character)
+            if modifiedPlayers[otherPlayer] then
+                local factor = tonumber(sizeSlider.Text) or 1.5
+                applySizeChanges(otherPlayer, currentPart, factor)
+            end
+        end)
+    end
+end
