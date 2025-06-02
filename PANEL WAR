@@ -1,0 +1,971 @@
+if game.PlaceId == 4639625707 then
+LocalTeamXP = nil
+local DiscordLib = loadstring(game:HttpGet"https://pastebin.com/raw/KRf0xDXQ")()
+local CharacterXP = Players.LocalPlayer.Character or Players.LocalPlayer.CharacterAdded:Wait()
+local Win1 = DiscordLib:Window(""..game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name.." | PANEL WAR | V1 | HUB | JUANKO MODS XP | "..identifyexecutor().."") -- Title/Name
+local Tab1 = Win1:Server("JUANKO-MODS", "") -- Server/Tab
+local myUserName = ""..Players.LocalPlayer.Name..""  
+ACTIVEFUNCIONAURORKIDJDJD = true
+SaveTPDied = false
+local function onPlayerDied(player)
+if SaveTPDied then
+EFIHWDK= Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+end
+end
+local function onPlayerAdded(player)
+    if player.Name == myUserName then
+        player.CharacterAdded:Connect(function(character)
+            local humanoid = character:WaitForChild("Humanoid")
+            humanoid.Died:Connect(function()
+                if ACTIVEFUNCIONAURORKIDJDJD then
+                    onPlayerDied(player)
+                end
+            end)
+        end)
+    end
+end
+Players.PlayerAdded:Connect(onPlayerAdded)
+for _, player in ipairs(Players:GetPlayers()) do
+    onPlayerAdded(player)
+end
+
+
+local TabGuiV1 = Tab1:Channel("PLAYER")
+TabGuiV1:Label("PLAYER | MOD WALK SPEED MULTIPLY")
+DUXHDQ = 1
+TabGuiV1:Textbox("Multiply Speed", "Default Is 1", false, function(txt)
+a = tonumber(txt) or 0
+DUXHDQ = a
+end) 
+TabGuiV1:Toggle("Activate Multiply Speed",false, function(state)
+        FunctionActivationSpeedXP = state
+ while FunctionActivationSpeedXP do
+   game:GetService("RunService").Heartbeat:Wait()
+if Players.LocalPlayer.Character or Players.LocalPlayer.CharacterAdded:Wait() then
+workspace[myUserName].Saude.Stances.Mobility.Value = DUXHDQ
+wait(1) 
+end
+   end
+end)
+
+
+TabGuiV1:Label("PLAYER | SPEED / JUMP / GRAVITY / SPIN")
+local TableModLoopWalkSpeedChange = {}
+ToSpeedValorFE = 100
+TabGuiV1:Textbox("WalkSpeed Level", "", false, function(txt)
+a = tonumber(txt) or 0;
+ToSpeedValorFE = a
+end) 
+TabGuiV1:Toggle("Activate WalkSpeed",false, function(VALOR)
+			if VALOR == true then
+		local Char = Players.LocalPlayer.Character or workspace:FindFirstChild(Players.LocalPlayer.Name)
+		local Human = Char and Char:FindFirstChildWhichIsA("Humanoid")
+		local function WalkXPSpeedXPChange()
+			if Char and Human then
+				Human.WalkSpeed = ToSpeedValorFE
+			end
+		end
+		WalkXPSpeedXPChange()
+		TableModLoopWalkSpeedChange.wsLoop = (TableModLoopWalkSpeedChange.wsLoop and TableModLoopWalkSpeedChange.wsLoop:Disconnect() and false) or Human:GetPropertyChangedSignal("WalkSpeed"):Connect(WalkXPSpeedXPChange)
+		TableModLoopWalkSpeedChange.wsCA = (TableModLoopWalkSpeedChange.wsCA and TableModLoopWalkSpeedChange.wsCA:Disconnect() and false) or Players.LocalPlayer.CharacterAdded:Connect(function(nChar)
+			Char, Human = nChar, nChar:WaitForChild("Humanoid")
+			WalkXPSpeedXPChange()
+			TableModLoopWalkSpeedChange.wsLoop = (TableModLoopWalkSpeedChange.wsLoop and TableModLoopWalkSpeedChange.wsLoop:Disconnect() and false) or Human:GetPropertyChangedSignal("WalkSpeed"):Connect(WalkXPSpeedXPChange)
+		end)
+			else
+TableModLoopWalkSpeedChange.wsLoop = (TableModLoopWalkSpeedChange.wsLoop and TableModLoopWalkSpeedChange.wsLoop:Disconnect() and false) or nil
+	TableModLoopWalkSpeedChange.wsCA = (TableModLoopWalkSpeedChange.wsCA and TableModLoopWalkSpeedChange.wsCA:Disconnect() and false) or nil
+			end
+end)
+local TableLoopModJumpPowerVhangr = {}
+ToJumpPowerValorFE = 100
+TabGuiV1:Textbox("JumpPower Level", "", false, function(txt)
+a = tonumber(txt) or 0;
+ToJumpPowerValorFE = a
+end) 
+TabGuiV1:Toggle("Activate JumpPower",false, function(VALOR)
+			if VALOR == true then
+		local Char = Players.LocalPlayer.Character or workspace:FindFirstChild(Players.LocalPlayer.Name)
+		local Human = Char and Char:FindFirstChildWhichIsA("Humanoid")
+		local function WalkXPSpeedXPChange()
+			if Char and Human then
+				Human.JumpPower = ToJumpPowerValorFE
+			end
+		end
+		WalkXPSpeedXPChange()
+		TableLoopModJumpPowerVhangr.JMloop = (TableLoopModJumpPowerVhangr.JMloop and TableLoopModJumpPowerVhangr.JMloop:Disconnect() and false) or Human:GetPropertyChangedSignal("JumpPower"):Connect(WalkXPSpeedXPChange)
+		TableLoopModJumpPowerVhangr.CAJM = (TableLoopModJumpPowerVhangr.CAJM and TableLoopModJumpPowerVhangr.CAJM:Disconnect() and false) or Players.LocalPlayer.CharacterAdded:Connect(function(nChar)
+			Char, Human = nChar, nChar:WaitForChild("Humanoid")
+			WalkXPSpeedXPChange()
+			TableLoopModJumpPowerVhangr.JMloop = (TableLoopModJumpPowerVhangr.JMloop and TableLoopModJumpPowerVhangr.JMloop:Disconnect() and false) or Human:GetPropertyChangedSignal("JumpPower"):Connect(WalkXPSpeedXPChange)
+		end)
+			else
+TableLoopModJumpPowerVhangr.JMloop = (TableLoopModJumpPowerVhangr.JMloop and TableLoopModJumpPowerVhangr.JMloop:Disconnect() and false) or nil
+	TableLoopModJumpPowerVhangr.CAJM = (TableLoopModJumpPowerVhangr.CAJM and TableLoopModJumpPowerVhangr.CAJM:Disconnect() and false) or nil
+			end
+end)
+TabGuiV1:Button("Reset Gravity", function()
+game.Workspace.Gravity = 180
+end)
+TabGuiV1:Textbox("Gravity Custom", "180", false, function(txt)
+game.Workspace.Gravity = txt
+end) 
+TabGuiV1:Button("Remove Spin", function()
+function getRoot(char)
+		 local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
+		 return rootPart
+	 end
+	 
+	 for i,v in pairs(getRoot(Players.LocalPlayer.Character):GetChildren()) do
+			 if v.Name == "Spinning" then
+				 v:Destroy()
+			 end
+		 end
+end)
+TabGuiV1:Textbox("Spin Number", "", false, function(txt)
+function getRoot(char)
+		 local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
+		 return rootPart
+	 end
+	 
+	 local spinSpeed = (txt)
+		 for i,v in pairs(getRoot(Players.LocalPlayer.Character):GetChildren()) do
+			 if v.Name == "Spinning" then
+				 v:Destroy()
+			 end
+		 end
+		 local Spin = Instance.new("BodyAngularVelocity")
+		 Spin.Name = "Spinning"
+		 Spin.Parent = getRoot(Players.LocalPlayer.Character)
+		 Spin.MaxTorque = Vector3.new(0, math.huge, 0)
+		 Spin.AngularVelocity = Vector3.new(0,spinSpeed,0)
+end) 
+
+
+TabGuiV1:Label("PLAYER | SPEED ANIMATION / ACTIVATE ANIMATION")
+JUNKOXD = 10
+TabGuiV1:Textbox("Speed Animation", "", false, function(txt)
+XD = tonumber(txt) or 0;
+JUNKOXD = XP
+end) 
+TabGuiV1:Toggle("Activate Speed Animation",false, function(state)
+        EJISIISJSJSJSJJSJSJJS = state
+ while EJISIISJSJSJSJJSJSJJS do
+   game:GetService("RunService").Heartbeat:Wait()
+local Humanoid = Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") or Players.LocalPlayer.Character:FindFirstChildOfClass("AnimationController")
+	local ActiveTracks = Humanoid:GetPlayingAnimationTracks()
+	for _, v in pairs(ActiveTracks) do
+		v:AdjustSpeed(JUNKOXD)
+	end
+   end
+end)
+
+
+TabGuiV1:Label("PLAYER | SPEED FLY / MODE FLY / ACTIVATE FLU")
+ModeFunctionFlyXP = true
+TabGuiV1:Toggle("Mode Car Fly",false, function(Value)
+print(state)
+if Value == true then
+ModeFunctionFlyXP = false
+			else
+ModeFunctionFlyXP = true
+			end
+end)
+SpeedFlyXP = (400)
+TabGuiV1:Textbox("Speed Fly Normal", "Default Is 400", false, function(txt)
+ SpeedFlyXP = (txt)
+	 if table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform()) then 
+end
+end) 
+TabGuiV1:Toggle("Active Fly Normal",false, function(state)
+			if state == true then
+local controlModule = require(Players.LocalPlayer.PlayerScripts:WaitForChild('PlayerModule'):WaitForChild("ControlModule"))
+	 local bv = Instance.new("BodyVelocity")
+	 bv.Name = "VelocityHandler"
+	 bv.Parent = Players.LocalPlayer.Character.HumanoidRootPart
+	 bv.MaxForce = Vector3.new(0,0,0)
+	 bv.Velocity = Vector3.new(0,0,0)
+	 
+	 local bg = Instance.new("BodyGyro")
+	 bg.Name = "GyroHandler"
+	 bg.Parent = Players.LocalPlayer.Character.HumanoidRootPart
+	 bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
+	 bg.P = 1000
+	 bg.D = 50
+	 
+	 local SignalV1XP
+	 SignalV1XP = Players.LocalPlayer.CharacterAdded:Connect(function(NewChar)
+	 local bv = Instance.new("BodyVelocity")
+	 bv.Name = "VelocityHandler"
+	 bv.Parent = NewChar:WaitForChild("Humanoid").RootPart
+	 bv.MaxForce = Vector3.new(0,0,0)
+	 bv.Velocity = Vector3.new(0,0,0)
+	 
+	 local bg = Instance.new("BodyGyro")
+	 bg.Name = "GyroHandler"
+	 bg.Parent = NewChar:WaitForChild("Humanoid").HumanoidRootPart
+	 bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
+	 bg.P = 1000
+	 bg.D = 50
+	 end)
+	 
+	 local camera = game.Workspace.CurrentCamera
+	 
+	 local SignalV2XP
+	 SignalV2XP = game:GetService"RunService".RenderStepped:Connect(function()
+	 if Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character.Humanoid.RootPart and Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
+	 
+	 Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
+	 Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.MaxTorque = Vector3.new(9e9,9e9,9e9)
+	 Players.LocalPlayer.Character.Humanoid.PlatformStand = ModeFunctionFlyXP
+	 
+	 Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.CFrame = camera.CoordinateFrame
+	 local direction = controlModule:GetMoveVector()
+	 Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Vector3.new()
+	 if direction.X > 0 then
+	 Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector*(direction.X*SpeedFlyXP)
+	 end
+	 if direction.X < 0 then
+	 Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector*(direction.X*SpeedFlyXP)
+	 end
+	 if direction.Z > 0 then
+	 Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector*(direction.Z*SpeedFlyXP)
+	 end
+	 if direction.Z < 0 then
+	 Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector*(direction.Z*SpeedFlyXP)
+	 end
+	 end
+	 end)
+			else
+Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler:Destroy()
+	 Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler:Destroy()
+	 Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+	 SignalV1XP:Disconnect()
+	 SignalV2XP:Disconnect()
+			end
+end)
+
+
+local TabGuiV1 = Tab1:Channel("FARM")
+TabGuiV1:Label("FARM | COLLECT MONEY / DELAY TIME")
+DelayTimeXP = 7
+TabGuiV1:Textbox("Delay Time", "Default Is 7", false, function(txt)
+a = tonumber(txt) or 7
+DelayTimeXP = a
+end) 
+TabGuiV1:Toggle("Auto Collect",false, function(state)
+        CollectMoneyFunctionXP = state
+ while CollectMoneyFunctionXP do
+game:GetService("RunService").Heartbeat:Wait()
+Lujar = Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].Essentials.CashCollector.CFrame
+wait(.5) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Lujar
+wait(DelayTimeXP) 
+   end
+end)
+
+
+TabGuiV1:Label("FARM | OIL BUY / VENDER ACEITE / BETA")
+TabGuiV1:Toggle("Auto Buy Oil",false, function(VALOR)
+			if VALOR == true then
+        OilByuCollectorXP = false
+StaffV1 = true
+while StaffV1 do
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace["Game Systems"].Warehouses.Warehouse1["Oil Capture"]["Barrel Template"].PromptPart.CFrame
+wait(.5) 
+StaffV1 = false
+OilByuCollectorXP = true
+Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+end
+
+
+ while OilByuCollectorXP do
+game:GetService("RunService").Heartbeat:Wait()
+if workspace["Game Systems"].Warehouses.Warehouse1["Oil Capture"]["Barrel Template"].PromptPart.BarrelPickup.Enabled == true then
+fireproximityprompt(workspace["Game Systems"].Warehouses.Warehouse1["Oil Capture"]["Barrel Template"].PromptPart.BarrelPickup) 
+OilByuCollectorXP = false
+Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+wait(1) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].Essentials["Oil Collector"].Collector.CFrame
+wait(1) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].Essentials["Oil Collector"].Collector.dropPrompt) 
+game:GetService("RunService").Heartbeat:Wait()
+StaffV1 = true
+end
+   end
+			else
+StaffV1 = false
+OilByuCollectorXP = false
+Players.LocalPlayer.Character.Humanoid.Health = 0
+			end
+end)
+
+
+local TabGuiV1 = Tab1:Channel("OTHERS")
+TabGuiV1:Label("OTHERS | OTROS / OTHERS / ECT")
+FastClickXP = false
+TabGuiV1:Button("Fast Click", function()
+			if FastClickXP == true then
+DiscordLib:Notification("PANEL WAR HUB", "Error when executing [Fast Click] because that function is already executed.", "OK")
+			else
+FastClickXP = true
+        for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+ if v:IsA("ProximityPrompt") then
+  v["HoldDuration"] = 0
+ end
+end
+game:GetService("ProximityPromptService").PromptButtonHoldBegan:Connect(function(v)
+    v["HoldDuration"] = 0
+end)
+			end
+end)
+TabGuiV1:Toggle("Anti Mute Chat",false, function(state)
+        AntiMuteChatXP = state
+ while AntiMuteChatXP do
+   game:GetService("RunService").Heartbeat:Wait()
+game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true)
+game:GetService("Players").LocalPlayer.CanChat.Value = true
+   end
+end)
+TabGuiV1:Toggle("Random Enrollment",false, function(state)
+        AnimationV1XP = state
+ while AnimationV1XP do
+local args = {
+    [1] = 0,
+    [2] = 1
+}
+
+game:GetService("ReplicatedStorage").ACS_Engine.Events.Stance:FireServer(unpack(args))
+wait(1) 
+local args = {
+    [1] = 0,
+    [2] = -1
+}
+
+game:GetService("ReplicatedStorage").ACS_Engine.Events.Stance:FireServer(unpack(args))
+wait(1)
+   end
+wait(.5)
+if AnimationV1XP == false then
+local args = {
+    [1] = 0,
+    [2] = 0,
+    [3] = true
+}
+
+game:GetService("ReplicatedStorage").ACS_Engine.Events.Stance:FireServer(unpack(args))
+end
+end)
+
+
+TabGuiV1:Label("OTHERS | RAGDOLL / FALL / DAMAGE")
+TabGuiV1:Toggle("Anti Ragdoll",false, function(state)
+        AntiRagdollXP = state
+ while AntiRagdollXP do
+   game:GetService("RunService").Heartbeat:Wait()
+if Players.LocalPlayer.Character or Players.LocalPlayer.CharacterAdded:Wait() then
+wait(1) 
+workspace[myUserName].Saude.Ragdoll.Disabled = true
+end
+   end
+wait(.5) 
+if AntiRagdollXP == false then
+workspace[myUserName].Saude.Ragdoll.Disabled = false
+end
+end)
+TabGuiV1:Toggle("Anti Fall Animation",false, function(state)
+        AntiFallAnimationXP = state
+ while AntiFallAnimationXP do
+   game:GetService("RunService").Heartbeat:Wait()
+if Players.LocalPlayer.Character or Players.LocalPlayer.CharacterAdded:Wait() then
+wait(1) 
+workspace[myUserName].Freefall.Disabled = true
+end
+   end
+wait(.5) 
+if AntiFallAnimationXP == false then
+workspace[myUserName].Freefall.Disabled = false
+end
+end)
+ActivateFuncionXP = false
+TabGuiV1:Button("Remove Fall Damage", function()
+			if ActivateFuncionXP == true then
+DiscordLib:Notification("PANEL WAR HUB", "Error Script is already active", "OK")
+			else
+ActivateFuncionXP = true
+local remote = game:GetService("ReplicatedStorage").ACS_Engine.Events.FDMG
+local old
+old = hookmetamethod(game,"__namecall",function(self,...) 
+local method = getnamecallmethod() 
+if self == remote and method == "FireServer" then
+return nil
+end
+return old(self,...) 
+end)
+			end
+end)
+
+
+TabGuiV1:Label("OTHERS | HITBOX / NEW VERZION / COPYRIGHT")
+SizeHitboxFunctionXP = 10
+TabGuiV1:Textbox("Hitbox Size", "Default Is 10", false, function(txt)
+a = tonumber(txt) or 0;
+SizeHitboxFunctionXP = a
+end) 
+ModePartXP = Enum.PartType.Block
+TabGuiV1:Toggle("Hitbox Mode Ball",false, function(VALOR)
+			if VALOR == true then
+ModePartXP = Enum.PartType.Ball
+			else
+ModePartXP = Enum.PartType.Block
+			end
+end)
+
+ActivationHitboxConfigXP = false
+TabGuiV1:Button("Activate Hitbox", function()
+			if ActivationHitboxConfigXP == true then
+DiscordLib:Notification("PANEL WAR HUB", "Hitbox is already enabled error", "OK")
+			else
+ActivationHitboxConfigXP = true
+local local_player = Players.LocalPlayer
+local run_service = game:GetService("RunService")
+local starter_gui = game:GetService("StarterGui")
+
+local function Test_XOXHDKDJDV(delta_time)
+    local character = local_player.Character
+
+    if not character then
+        return
+    end
+
+    local humanoid_root_part = character:FindFirstChild("HumanoidRootPart")
+
+    if not humanoid_root_part then
+        return
+    end
+
+    for _, player in pairs(Players:GetPlayers()) do
+        if player == local_player then
+            continue
+        end
+
+        local player_character = player.Character
+        
+        if not player_character then
+            continue
+        end
+
+        local player_humanoid_root_part = player_character:FindFirstChild("HumanoidRootPart")
+
+        if not player_humanoid_root_part then
+            continue
+        end
+
+        local are_touching = false
+
+        for _, part in pairs(workspace:GetPartsInPart(player_humanoid_root_part)) do
+            if part:IsDescendantOf(character) then
+                are_touching = true
+                break
+            end
+        end
+
+        if player.Team == local_player.Team or are_touching then
+            player_humanoid_root_part.Size = Vector3.new(SizeHitboxFunctionXP, SizeHitboxFunctionXP, SizeHitboxFunctionXP)
+            player_humanoid_root_part.Transparency = 0.95
+            player_humanoid_root_part.BrickColor = player.Team.TeamColor
+            player_humanoid_root_part.Shape = ModePartXP
+            player_humanoid_root_part.CanCollide = false
+            continue
+        end
+
+        player_humanoid_root_part.Size = Vector3.new(SizeHitboxFunctionXP, SizeHitboxFunctionXP, SizeHitboxFunctionXP)
+        player_humanoid_root_part.Transparency = 0.7
+        player_humanoid_root_part.BrickColor = player.Team.TeamColor
+        player_humanoid_root_part.Shape = ModePartXP
+        player_humanoid_root_part.CanCollide = true
+    end
+end
+run_service.Stepped:Connect(Test_XOXHDKDJDV)
+			end
+end)
+
+TabGuiV1:Label("OTHERS | CLIENT BRING / CAR / DRON / OBJETO")
+function CBringRC()
+rcWorkspace = workspace:FindFirstChild("Game Systems"):FindFirstChild("RC Workspace")
+    if rcWorkspace then
+        for _, rcObject in ipairs(rcWorkspace:GetChildren()) do
+            if rcObject:IsA("Model") and rcObject.PrimaryPart then
+                rcObject:SetPrimaryPartCFrame(CharacterXP.PrimaryPart.CFrame + Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 15)
+            end
+        end
+    else
+    end
+end
+
+function CBringPlanes()
+planeWorkspace = workspace:FindFirstChild("Game Systems"):FindFirstChild("Plane Workspace")
+    if planeWorkspace then
+        for _, plane in ipairs(planeWorkspace:GetChildren()) do
+            if plane:IsA("Model") and plane.PrimaryPart then
+                plane:SetPrimaryPartCFrame(CharacterXP.PrimaryPart.CFrame + Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 15)
+            end
+        end
+    else
+    end
+end
+
+function CBringBoats()
+boatWorkspace = workspace:FindFirstChild("Game Systems"):FindFirstChild("Boat Workspace")
+    if boatWorkspace then
+        for _, boat in ipairs(boatWorkspace:GetChildren()) do
+            if boat:IsA("Model") and boat.PrimaryPart then
+                boat:SetPrimaryPartCFrame(CharacterXP.PrimaryPart.CFrame + Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 15)
+            end
+        end
+    else
+    end
+end
+
+function CBringDrones()
+droneWorkspace = workspace:FindFirstChild("Game Systems"):FindFirstChild("Drone Workspace")
+    if droneWorkspace then
+        for _, drone in ipairs(droneWorkspace:GetChildren()) do
+            if drone:IsA("Model") and drone.PrimaryPart then
+                drone:SetPrimaryPartCFrame(CharacterXP.PrimaryPart.CFrame + Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 15)
+            end
+        end
+    else
+    end
+end
+
+function CBringVehicles()
+vehicleWorkspace = workspace:FindFirstChild("Game Systems"):FindFirstChild("Vehicle Workspace")
+    if vehicleWorkspace then
+        for _, vehicle in ipairs(vehicleWorkspace:GetChildren()) do
+            if vehicle:IsA("Model") and vehicle.PrimaryPart then
+                vehicle:SetPrimaryPartCFrame(CharacterXP.PrimaryPart.CFrame + Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 15)
+            end
+        end
+    else
+    end
+end
+
+function CBringTanks()
+tankWorkspace = workspace:FindFirstChild("Game Systems"):FindFirstChild("Tank Workspace")
+    if tankWorkspace then
+        for _, tank in ipairs(tankWorkspace:GetChildren()) do
+            if tank:IsA("Model") and tank.PrimaryPart then
+                tank:SetPrimaryPartCFrame(CharacterXP.PrimaryPart.CFrame + Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 15)
+            end
+        end
+    else
+    end
+end
+
+function CBringHelicopters()
+helicopterWorkspace = workspace:FindFirstChild("Game Systems"):FindFirstChild("Helicopter Workspace")
+    if helicopterWorkspace then
+        for _, helicopter in ipairs(helicopterWorkspace:GetChildren()) do
+            if helicopter:IsA("Model") and helicopter.PrimaryPart then
+                helicopter:SetPrimaryPartCFrame(CharacterXP.PrimaryPart.CFrame + Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 15)
+            end
+        end
+    else
+    end
+end
+
+function CBringAirstrikes()
+airstrikeWorkspace = workspace:FindFirstChild("Game Systems"):FindFirstChild("Airstrike Workspace")
+    if airstrikeWorkspace then
+        for _, airstrike in ipairs(airstrikeWorkspace:GetChildren()) do
+            if airstrike:IsA("Model") and airstrike.PrimaryPart then
+                airstrike:SetPrimaryPartCFrame(CharacterXP.PrimaryPart.CFrame + Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 15)
+            end
+        end
+    else
+    end
+end
+
+TabGuiV1:Toggle("Cbring RC",false, function(state)
+        EHFUSHDHDJ = state
+ while EHFUSHDHDJ do
+   game:GetService("RunService").Heartbeat:Wait()
+CBringRC()
+   end
+end)
+TabGuiV1:Toggle("Cbring Planes",false, function(state)
+        VBXJSISHSJSJ = state
+ while VBXJSISHSJSJ do
+   game:GetService("RunService").Heartbeat:Wait()
+CBringPlanes()
+   end
+end)
+TabGuiV1:Toggle("Cbring Boats",false, function(state)
+        KTENJFSH = state
+ while KTENJFSH do
+   game:GetService("RunService").Heartbeat:Wait()
+CBringBoats()
+   end
+end)
+TabGuiV1:Toggle("Cbring Drones",false, function(state)
+        CNDKHSKSHQQU = state
+ while CNDKHSKSHQQU do
+   game:GetService("RunService").Heartbeat:Wait()
+CBringDrones()
+   end
+end)
+TabGuiV1:Toggle("Cbring Vehicles",false, function(state)
+        QUEYQIQIQUUQ = state
+ while QUEYQIQIQUUQ do
+   game:GetService("RunService").Heartbeat:Wait()
+CBringVehicles()
+   end
+end)
+TabGuiV1:Toggle("Cbring Tanks",false, function(state)
+        WXWGWXWCW = state
+ while WXWGWXWCW do
+   game:GetService("RunService").Heartbeat:Wait()
+CBringTanks()
+   end
+end)
+TabGuiV1:Toggle("Cbring Helicopters",false, function(state)
+        WCSJSIUSVSKS = state
+ while WCSJSIUSVSKS do
+   game:GetService("RunService").Heartbeat:Wait()
+CBringHelicopters()
+   end
+end)
+TabGuiV1:Toggle("Cbring Airstrikes",false, function(state)
+        CXNNXBXBXNX = state
+ while CXNNXBXBXNX do
+   game:GetService("RunService").Heartbeat:Wait()
+CBringAirstrikes()
+   end
+end)
+
+
+
+
+
+local TabGuiV1 = Tab1:Channel("ESP")
+TabGuiV1:Label("ESP | HITBOX / OBJETO / CHECK")
+TabGuiV1:Toggle("View Hitbox All",false, function(state)
+			if state == true then
+settings():GetService("RenderSettings").ShowBoundingBoxes = true
+			else
+settings():GetService("RenderSettings").ShowBoundingBoxes = false
+			end
+end)
+
+
+TabGuiV1:Label("ESP - ESP PLAYERS / VIEW PLAYERS / OLD")
+TabGuiV1:Label("Only Load Nearby Players")
+local aj = loadstring(game:HttpGet("https://raw.githubusercontent.com/GamingScripter/V.G-Hub/main/Karrot-Esp"))()
+TabGuiV1:Toggle("Active All Funcion ESP",false, function(K)
+aj:Toggle(K)
+aj.Players = K 
+aj.TeamMates = K 
+end)
+TabGuiV1:Toggle("ESP Tracers",false, function(K)
+aj.Tracers = K
+end)
+TabGuiV1:Toggle("ESP Name + Distance",false, function(K)
+aj.Names = K
+end)
+TabGuiV1:Toggle("ESP Boxes",false, function(K)
+aj.Boxes = K 
+end)
+TabGuiV1:Toggle("ESP Team Color",false, function(Y)
+aj.TeamColor = Y
+end)
+TabGuiV1:Toggle("Random Color ESP",false, function(state)
+        FuncionLoopRandomColorPlayer = state
+ while FuncionLoopRandomColorPlayer do
+function generarColorAleatorio()
+    local rojo = math.random(0, 10) / 10
+    local verde = math.random(0, 10) / 10
+    local azul = math.random(0, 10) / 10
+    return Color3.new(rojo, verde, azul)
+end
+local colorAleatorio = generarColorAleatorio()
+aj.Color = colorAleatorio
+wait(.1) 
+end
+end)
+TabGuiV1:Colorpicker("ESP Color", Color3.fromRGB(255,255,255), function(P)
+aj.Color = P 
+end)
+
+AutoFixMyNameXP = false
+Players.LocalPlayer.CharacterAdded:Connect(function() 
+wait(1) 
+if SaveTPDied then 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = EFIHWDK
+end
+if AutoFixMyNameXP then
+LocalTeamXP = ""..Players.LocalPlayer.Team.Name..""
+end
+end)
+
+local TabGuiV1 = Tab1:Channel("TOOLS")
+TabGuiV1:Label("TOOLS | SETINGS / CONFIG / INFO")
+TabGuiV1:Toggle("Auto Fix My Team Name",false, function(VALOR)
+			if VALOR == true then
+AutoFixMyNameXP = true
+LocalTeamXP = ""..Players.LocalPlayer.Team.Name..""
+			else
+AutoFixMyNameXP = false
+			end
+end)
+TabGuiV1:Button("Fix My Team Name", function()
+LocalTeamXP = ""..Players.LocalPlayer.Team.Name..""
+end)
+
+
+TabGuiV1:Label("TOOLS | OTHERS / OTROS / ECT / BETA")
+TabGuiV1:Button("Give Shield V1", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["Riot Shield Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["Riot Shield Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give Medkit", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["Medkit Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["Medkit Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+
+
+TabGuiV1:Label("TOOLS | GIVE GUNS / OBTENER ARMA")
+TabGuiV1:Label("Necessary to Have Those Weapons At Their Base")
+TabGuiV1:Button("Give RPG", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["RPG Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["RPG Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give G36C", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["G36C Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["G36C Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give Remington-MSR", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["Remington MSR Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["Remington MSR Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give VHS-2", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["VHS-2 Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["VHS-2 Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give SA80-LSW", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["SA80 LSW Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["SA80 LSW Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give SPAS-Shotgun", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["SPAS Shotgun Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["SPAS Shotgun Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give SA80-Rifle", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["SA80 Rifle Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["SA80 Rifle Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give EMP", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["EMP Gun Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["EMP Gun Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give MK18-Rifle", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["MK18 Rifle Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["MK18 Rifle Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give Remington-870", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["Remington 870 Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["Remington 870 Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give Rocket-Launcher", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects.StingerRocketLauncher.Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects.StingerRocketLauncher.Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give M40-Sniper", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["M40 Sniper Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["M40 Sniper Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give Micro-Uzi", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["Micro Uzi Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["Micro Uzi Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give SVD", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["Dragunov SVD Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["Dragunov SVD Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give MP9", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["MP9 Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["MP9 Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give UMP45", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["UMP45 Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["UMP45 Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+TabGuiV1:Button("Give AK-47", function()
+SaveTP = Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+game:GetService("RunService").Heartbeat:Wait()
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["AK47 Giver"].Prompt.CFrame
+wait(.5) 
+fireproximityprompt(workspace.Tycoon.Tycoons[LocalTeamXP].PurchasedObjects["AK47 Giver"].Prompt["Weapon Giver"]) 
+Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SaveTP
+end)
+
+
+local TabGuiV1 = Tab1:Channel("MISC")
+TabGuiV1:Label("MISC | NOCLIP / JUMP / TOUCH / BETA")
+TabGuiV1:Toggle("Infinite Jump",false, function(state)
+CNZUCBSBJSJS = state
+game:GetService("UserInputService").JumpRequest:Connect(function()
+    if CNZUCBSBJSJS then
+game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+    end
+end) 
+end) 
+local wallClippingEnabled = false;
+local heartbeatConnection = nil;
+local function activateWallClipping()
+	local FlatIdent_2E3FF = 0;
+	local player;
+	local character;
+	while true do
+		if (FlatIdent_2E3FF == 0) then
+			player = game:GetService("Players")['LocalPlayer'];
+			character = player['Character'] or player['CharacterAdded']:Wait();
+			FlatIdent_2E3FF = 1;
+		end
+		if (FlatIdent_2E3FF == 1) then
+			heartbeatConnection = game:GetService("RunService")['Heartbeat']:Connect(function()
+				if (wallClippingEnabled and character and character:FindFirstChildWhichIsA("Humanoid")) then
+					for _, part in pairs(character:GetDescendants()) do
+						if part:IsA("BasePart") then
+							part['CanCollide'] = false;
+						end
+					end
+				end
+			end);
+			break;
+		end
+	end
+end
+local function deactivateWallClipping()
+	local FlatIdent_4A2C5 = 0;
+	local player;
+	local character;
+	while true do
+		if (FlatIdent_4A2C5 == 0) then
+			if heartbeatConnection then
+				heartbeatConnection:Disconnect();
+			end
+			player = game:GetService("Players")['LocalPlayer'];
+			FlatIdent_4A2C5 = 1;
+		end
+		if (FlatIdent_4A2C5 == 1) then
+			character = player['Character'] or player['CharacterAdded']:Wait();
+			for _, part in pairs(character:GetDescendants()) do
+				if part:IsA("BasePart") then
+					part['CanCollide'] = true;
+				end
+			end
+			break;
+		end
+	end
+end
+TabGuiV1:Toggle("NoClip",false, function(value)
+	local FlatIdent_53FC6 = 0;
+	while true do
+		if (0 == FlatIdent_53FC6) then
+			wallClippingEnabled = value;
+			if wallClippingEnabled then
+				activateWallClipping();
+			else
+				deactivateWallClipping();
+				game['Players']['LocalPlayer']['Character']['Humanoid']['Jump'] = true;
+			end
+			break;
+		end
+	end
+end)
+TabGuiV1:Toggle("Anti Purchase Prompt",false, function(XP)
+			if XP == true then
+game:GetService("CoreGui").PurchasePrompt.Enabled = true
+			else
+game:GetService("CoreGui").PurchasePrompt.Enabled = false
+			end
+end)
+else
+game:GetService("TeleportService"):Teleport(4639625707, Player)
+end
